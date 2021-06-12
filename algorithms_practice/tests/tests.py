@@ -1,32 +1,34 @@
+from random import randint
+from math import factorial as fact
+
 import pytest
 
 from algorithms_practice.algorithms.algorithms import *
 
 
 # binary_search()
-@pytest.mark.parametrize('test_arg, expected',
-                         [(([1, 2, 3, 4, 5, 6, 7, 8, 9], 4), 3),
-                          (([0, 1, 2, 2, 2, 3, 4, 5, 6], 2), 4),
-                          (([-4, -3, -2, -1, 0, 1, 2, 3, 4], -2), 2),
-                          (([0, 1, 2, 3, 4, 5, 7, 8, 9], 6), -1)])
-def test_binary_search(test_arg, expected):
-    assert binary_search(*test_arg) == expected
+@pytest.fixture()
+def test_array():
+    """Returns random array"""
+    array = []
+    for i in range(5):
+        array.append(randint(0, 20))
+    return array
+
+
+def test_binary_search(test_array):
+    test_array = sorted(test_array)
+    rand_int = randint(0, len(test_array))
+    assert binary_search(test_array, test_array[rand_int]) == rand_int
 
 
 # quick_sort()
-@pytest.mark.parametrize('test_arg, expected',
-                         [([1, 1], [1, 1]),
-                          ([1], [1]),
-                          ([2, 3, 1, 0, 2, 3, 0, 1], [0, 0, 1, 1, 2, 2, 3, 3]),
-                          ([-2, -3, -1, 0, 2, 3, 0, 1], [-3, -2, -1, 0, 0, 1, 2, 3])])
-def test_quick_sort(test_arg, expected):
-    assert quick_sort(test_arg) == expected
+def test_quick_sort(test_array):
+    assert quick_sort(test_array) == sorted(test_array)
 
 
 # factorial()
-@pytest.mark.parametrize('test_arg, expected',
-                         [(0, 1),
-                          (1, 1),
-                          (5, 120)])
-def test_factorial(test_arg, expected):
-    assert factorial(test_arg) == expected
+def test_factorial():
+    for i in range(5):
+        rand_int = randint(0, 10)
+        assert factorial(rand_int) == fact(rand_int)
