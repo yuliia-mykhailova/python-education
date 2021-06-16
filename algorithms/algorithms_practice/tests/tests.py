@@ -3,8 +3,6 @@ from math import factorial as fact
 
 import pytest
 
-from algorithms_practice.algorithms.algorithms import *
-
 
 # binary_search()
 @pytest.fixture()
