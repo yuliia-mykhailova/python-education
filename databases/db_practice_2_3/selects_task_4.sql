@@ -20,10 +20,10 @@ ORDER BY COUNT(carts_cart_id) DESC
 LIMIT 10;
 
 -- 4.5 Select top 5 users that spent more money in total
-SELECT users.*, MAX(o.total) FROM users INNER JOIN carts c on users.user_id = c.users_user_id INNER JOIN orders o on c.cart_id = o.carts_cart_id
+SELECT users.*, SUM(o.total) FROM users INNER JOIN carts c on users.user_id = c.users_user_id INNER JOIN orders o on c.cart_id = o.carts_cart_id
 WHERE o.order_status_order_status_id=4
 GROUP BY users.user_id
-ORDER BY MAX DESC
+ORDER BY SUM DESC
 LIMIT 5;
 
 -- 4.6 Select top 5 users that made the biggest amount or orders
