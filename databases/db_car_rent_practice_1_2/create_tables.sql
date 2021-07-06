@@ -43,16 +43,20 @@ CREATE TABLE IF NOT EXISTS Rent(
     id_rent serial PRIMARY KEY,
     days smallint NOT NULL,
     license_plate varchar(15) NOT NULL,
-    FOREIGN KEY (license_plate)
-        REFERENCES Car(license_plate)
+    CONSTRAINT license_plate_fkey
+        FOREIGN KEY (license_plate)
+            REFERENCES Car(license_plate)
+                ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Rent_Customer(
     id_rent INT NOT NULL,
     id_customer INT,
     date timestamp NOT NULL,
-    FOREIGN KEY (id_rent)
-        REFERENCES Rent(id_rent),
+    CONSTRAINT id_rent_fkey
+        FOREIGN KEY (id_rent)
+            REFERENCES Rent(id_rent)
+                ON DELETE CASCADE,
     FOREIGN KEY (id_customer)
         REFERENCES Customer(id_customer)
 );

@@ -36,13 +36,15 @@ SELECT * FROM potential_customers;
 DROP VIEW potential_customers;
 
 
--- View 10 most profitable branches for last year
+-- View 10 most profitable branches for last year with avg gain
 CREATE OR REPLACE VIEW top_branch_for_year AS
 SELECT b.branch_name,
        CONCAT(c2.city_abbreviation, ' ', a.house,' ', a.street) AS address,
        COUNT(r.license_plate) AS num_of_rents,
        COUNT(c.id_branch) AS num_of_cars,
-       SUM(c.price*r.days) AS gain
+       SUM(c.price*r.days) AS gain,
+       ROUND(AVG(r.days)) AS avg_days_for_rent,
+       SUM(c.price*r.days)*ROUND(AVG(r.days))/SUM(r.days) AS avg_gain
 FROM branch b
 INNER JOIN car c USING (id_branch)
 JOIN rent r on c.license_plate = r.license_plate
@@ -52,7 +54,7 @@ JOIN city c2 USING (id_abbreviation)
 WHERE rc.date BETWEEN '2020-01-01' AND '2020-12-31'
 GROUP BY b.branch_name, CONCAT(c2.city_abbreviation, ' ', a.house,' ', a.street)
 HAVING COUNT(c.id_branch)>5
-ORDER BY SUM(c.price*r.days) DESC
+ORDER BY SUM(c.price*r.days)*ROUND(AVG(r.days))/SUM(r.days) DESC
 LIMIT 10;
 
 
